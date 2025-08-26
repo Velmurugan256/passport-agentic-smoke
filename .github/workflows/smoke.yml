@@ -4,29 +4,22 @@ on:
   workflow_dispatch:
   push:
     branches: [ main ]
-  # Optional: run daily at 9:00 AM India time (IST is UTC+5:30 → 03:30 UTC)
   schedule:
-    - cron: "30 3 * * *"
+    - cron: "30 3 * * *"  # optional: daily 9:00 AM IST
 
 jobs:
   smoke:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      - name: Install deps
-        run: npm ci
-
-      - name: Install Playwright browsers
-        run: npm run install:pw
+      - run: npm ci
+      - run: npm run install:pw
 
       - name: Run smoke tests
         env:
