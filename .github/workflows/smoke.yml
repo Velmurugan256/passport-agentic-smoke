@@ -1,0 +1,54 @@
+name: Smoke Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  # Optional: run daily at 9:00 AM India time (IST is UTC+5:30 → 03:30 UTC)
+  schedule:
+    - cron: "30 3 * * *"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npm run install:pw
+
+      - name: Run smoke tests
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          TEST_USER: ${{ secrets.TEST_USER }}
+          TEST_PASS: ${{ secrets.TEST_PASS }}
+          HEADLESS: 'true'
+          VIDEO: 'on'
+          TRACE: 'on'
+        run: npm run test:smoke
+
+      - name: Update scenarios file
+        run: npm run scenarios:update
+
+      - name: Export results to CSV/XLSX
+        run: npm run results:excel
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-artifacts
+          path: |
+            artifacts/**
+            smoke_scenarios.md
+          if-no-files-found: warn

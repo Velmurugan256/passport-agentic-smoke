@@ -1,0 +1,20 @@
+{
+  "name": "passport-agentic-smoke",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install:pw": "npx playwright install --with-deps",
+    "test": "playwright test",
+    "test:smoke": "playwright test tests/smoke",
+    "report": "npx playwright show-report",
+    "results:excel": "ts-node scripts/export-results.ts",
+    "scenarios:update": "ts-node scripts/update-scenarios.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "dotenv": "^16.4.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0",
+    "xlsx": "^0.18.5"
+  }
+}
