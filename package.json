@@ -7,13 +7,12 @@
     "test": "playwright test",
     "test:smoke": "playwright test tests/smoke",
     "report": "npx playwright show-report",
-    "results:excel": "ts-node scripts/export-results.ts",
-    "scenarios:update": "ts-node scripts/update-scenarios.ts"
+    "results:excel": "node scripts/export-results.mjs",
+    "scenarios:update": "node scripts/update-scenarios.mjs"
   },
   "devDependencies": {
-    "@playwright/test": "^1.47.0",
+    "@playwright/test": "^1.55.0",
     "dotenv": "^16.4.5",
-    "ts-node": "^10.9.2",
     "typescript": "^5.4.0",
     "xlsx": "^0.18.5"
   }
